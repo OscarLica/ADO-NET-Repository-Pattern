@@ -19,7 +19,7 @@ namespace TagHelpers.Controllers
             _ClientService = ClientService;
         }
 
-        [HttpGet]
+        [HttpGet("{Id}")]
         public IActionResult Get(int Id)
         => Ok(_ClientService.Get(Id));
 

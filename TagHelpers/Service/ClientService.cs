@@ -25,7 +25,9 @@ namespace TagHelpers.Service
         {
             using (var context = _unitOfWork.Create())
             {
-                return context.Repositories._ClientRepository.Create(cliente);
+                var result = context.Repositories._ClientRepository.Create(cliente);
+                context.SaveChanges();
+                return result;
             }
         }
 
@@ -34,6 +36,7 @@ namespace TagHelpers.Service
             using (var context = _unitOfWork.Create())
             {
                 return context.Repositories._ClientRepository.Get(id);
+
             }
         }
 
@@ -49,7 +52,9 @@ namespace TagHelpers.Service
         {
             using (var context = _unitOfWork.Create())
             {
-                return context.Repositories._ClientRepository.Update(cliente);
+                var result = context.Repositories._ClientRepository.Update(cliente);
+                context.SaveChanges();
+                return result;
             }
         }
     }

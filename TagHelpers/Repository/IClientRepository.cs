@@ -34,7 +34,7 @@ namespace TagHelpers.Repository
             comando.Parameters.AddWithValue("@Direccion", cliente.Direccion);
 
             comando.ExecuteNonQuery();
-
+           
             return new Response { Success = true, Message = "Cliente creado exitosamente" };
         }
 
@@ -43,15 +43,20 @@ namespace TagHelpers.Repository
             var query = "Select * from cliente where Id = @Id";
             var command = CreateCommand(query);
             command.Parameters.AddWithValue("@Id", id);
-            var reader = command.ExecuteReader();
-
-            return new Cliente
+            using (var reader = command.ExecuteReader())
             {
-                Id = Convert.ToInt32(reader["Id"]),
-                Nombre = reader["Nombre"].ToString(),
-                Apellido = reader["Apellido"].ToString(),
-                Direccion = reader["Direccion"].ToString()
-            };
+                while (reader.Read()) {
+                    return new Cliente
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        Nombre = reader["Nombre"].ToString(),
+                        Apellido = reader["Apellido"].ToString(),
+                        Direccion = reader["Direccion"].ToString()
+                    };
+                }
+            }
+
+            return null;
         }
 
         public List<Cliente> GetAll()
